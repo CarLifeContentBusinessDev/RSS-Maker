@@ -165,6 +165,30 @@ export default function AdminDashboard() {
     );
   };
 
+  const getCurrentProgram = (channel: Channel): ScheduleItem | null => {
+    if (!Array.isArray(channel.schedule) || channel.schedule.length === 0) {
+      return null;
+    }
+
+    const now = new Date();
+    const kstHour = (now.getUTCHours() + 9) % 24;
+
+    return (
+      channel.schedule.find((item) => {
+        if (item.startHour < item.endHour) {
+          return kstHour >= item.startHour && kstHour < item.endHour;
+        }
+        return kstHour >= item.startHour || kstHour < item.endHour;
+      }) ?? channel.schedule[0]
+    );
+  };
+
+  const formatHourRange = (startHour: number, endHour: number): string => {
+    const start = String(startHour).padStart(2, "0");
+    const end = String(endHour).padStart(2, "0");
+    return `${start}:00 - ${end}:00`;
+  };
+
   const selectedChannel = selectedChannelId
     ? (channels.find((item) => item.id === selectedChannelId) ?? null)
     : null;
@@ -404,38 +428,75 @@ export default function AdminDashboard() {
               <main className="admin-grid">
                 {filteredChannels.map((ch) => (
                   <article key={ch.id} className="channel-card list-card">
-                    <div className="channel-head">
-                      <span className="channel-id">ID: {ch.id}</span>
-                      <span className="admin-count">
-                        편성표 {ch.schedule?.length ?? 0}개
-                      </span>
-                    </div>
+                    {(() => {
+                      const currentProgram = getCurrentProgram(ch);
 
-                    <div className="channel-body">
-                      <h3 className="list-title">{ch.title || "제목 없음"}</h3>
-                      <p className="list-url">{ch.stream_url || "URL 없음"}</p>
-                      <p className="list-desc">
-                        {ch.description || "설명이 없습니다."}
-                      </p>
-                    </div>
+                      return (
+                        <>
+                          <div className="channel-head">
+                            <span className="channel-id">ID: {ch.id}</span>
+                            <span className="admin-count">
+                              편성표 {ch.schedule?.length ?? 0}개
+                            </span>
+                          </div>
 
-                    <div className="channel-meta">
-                      <a
-                        href={`/rss/${ch.id}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="channel-link"
-                      >
-                        XML Preview <ExternalLink size={14} />
-                      </a>
-                      <button
-                        type="button"
-                        className="channel-save"
-                        onClick={() => openDetail(ch.id)}
-                      >
-                        <Eye size={16} /> 상세 보기
-                      </button>
-                    </div>
+                          <div className="channel-body">
+                            <h3 className="list-title">
+                              {ch.title || "제목 없음"}
+                            </h3>
+                            <p className="list-desc">
+                              {ch.description || "설명이 없습니다."}
+                            </p>
+
+                            <div className="list-program">
+                              <p className="list-program-label">현재 편성</p>
+                              {currentProgram ? (
+                                <>
+                                  <p className="list-program-time">
+                                    {formatHourRange(
+                                      currentProgram.startHour,
+                                      currentProgram.endHour,
+                                    )}
+                                  </p>
+                                  <p className="list-program-title">
+                                    {currentProgram.title ||
+                                      "프로그램 제목 없음"}
+                                  </p>
+                                  <p className="list-program-desc">
+                                    {currentProgram.desc ||
+                                      "프로그램 설명 없음"}
+                                  </p>
+                                </>
+                              ) : (
+                                <p className="list-program-empty">
+                                  등록된 편성표가 없습니다.
+                                </p>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="channel-meta">
+                            <div className="list-actions">
+                              <a
+                                href={`/rss/${ch.id}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="channel-link list-xml-link"
+                              >
+                                XML 미리보기 <ExternalLink size={14} />
+                              </a>
+                              <button
+                                type="button"
+                                className="channel-save"
+                                onClick={() => openDetail(ch.id)}
+                              >
+                                <Eye size={16} /> 상세 보기
+                              </button>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })()}
                   </article>
                 ))}
               </main>

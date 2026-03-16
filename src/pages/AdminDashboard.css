@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=SUIT:wght@400;500;700;800&display=swap");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
 :root {
   --admin-bg: linear-gradient(135deg, #fcf7ed 0%, #eef7ff 45%, #f3fdf5 100%);
@@ -20,8 +20,8 @@
   overflow: hidden;
   background: var(--admin-bg);
   color: var(--admin-ink);
-  font-family: "SUIT", "Noto Sans KR", "Segoe UI", sans-serif;
-  padding: 2rem 1rem 2.5rem;
+  font-family: "Pretendard", "Noto Sans KR", "Segoe UI", sans-serif;
+  padding: 3rem 2.5rem 3.3rem;
 }
 
 .admin-page::before,
@@ -52,7 +52,8 @@
 
 .admin-shell {
   width: 100%;
-  margin: 0;
+  max-width: 1440px;
+  margin: 0 auto;
   position: relative;
   z-index: 1;
 }
@@ -90,9 +91,10 @@
 
 .admin-title {
   margin: 0;
-  font-family: "Space Grotesk", "SUIT", sans-serif;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
   font-size: clamp(1.9rem, 3.4vw, 3rem);
   letter-spacing: -0.04em;
+  font-weight: 800;
   line-height: 1.06;
   display: flex;
   align-items: center;
@@ -254,17 +256,10 @@
 
 .list-title {
   margin: 0;
-  font-family: "Space Grotesk", "SUIT", sans-serif;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 1.2rem;
+  font-weight: 700;
   letter-spacing: -0.02em;
-}
-
-.list-url {
-  margin: 0;
-  color: var(--admin-primary-strong);
-  font-size: 0.82rem;
-  word-break: break-all;
-  font-family: Consolas, "JetBrains Mono", monospace;
 }
 
 .list-desc {
@@ -276,6 +271,56 @@
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+
+.list-program {
+  margin-top: 0.05rem;
+  border: 1px solid rgba(17, 32, 58, 0.12);
+  background: rgba(255, 255, 255, 0.72);
+  border-radius: 14px;
+  padding: 0.7rem 0.82rem;
+}
+
+.list-program-label {
+  margin: 0;
+  color: var(--admin-muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.list-program-time,
+.list-program-title,
+.list-program-desc,
+.list-program-empty {
+  margin: 0;
+}
+
+.list-program-time {
+  margin-top: 0.22rem;
+  color: var(--admin-primary-strong);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.list-program-title {
+  margin-top: 0.24rem;
+  font-size: 0.89rem;
+  font-weight: 700;
+  color: #1e2c49;
+}
+
+.list-program-desc {
+  margin-top: 0.2rem;
+  color: var(--admin-muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.list-program-empty {
+  margin-top: 0.34rem;
+  color: var(--admin-muted);
+  font-size: 0.82rem;
 }
 
 .form-group {
@@ -346,6 +391,37 @@
   font-size: 0.8rem;
 }
 
+.list-card .channel-meta {
+  gap: 0.7rem;
+}
+
+.list-meta-hint {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.list-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.list-actions .channel-save {
+  height: 38px;
+}
+
+.list-xml-link {
+  padding: 0.45rem 0.35rem;
+  border-radius: 10px;
+}
+
+.list-xml-link:hover {
+  background: rgba(15, 93, 255, 0.1);
+}
+
 .channel-save {
   border: none;
   border-radius: 13px;
@@ -356,11 +432,18 @@
   padding: 0.66rem 1rem;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.42rem;
+  white-space: nowrap;
+  flex-shrink: 0;
   cursor: pointer;
   transition:
     background-color 150ms ease,
     transform 150ms ease;
+}
+
+.channel-save svg {
+  flex-shrink: 0;
 }
 
 .channel-save:hover {
@@ -579,7 +662,7 @@
 
 @media (max-width: 680px) {
   .admin-page {
-    padding: 1rem 0.75rem 1.8rem;
+    padding: 1.25rem 1rem 2rem;
   }
 
   .admin-toolbar {
@@ -594,6 +677,27 @@
   .channel-meta {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .list-card .channel-meta {
+    align-items: stretch;
+  }
+
+  .list-actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .list-card .channel-save,
+  .list-actions .channel-link {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .list-card .channel-save {
+    width: 100%;
+    justify-content: center;
   }
 
   .detail-toolbar,
