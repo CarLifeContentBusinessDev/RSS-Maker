@@ -3,6 +3,6 @@
 
 [[redirects]]
     from = "/rss/:id"
-    to = "/.netlify/functions/rss"
+  to = "/.netlify/functions/rss?id=:id"
     status = 200
     force = true

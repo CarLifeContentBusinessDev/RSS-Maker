@@ -8,8 +8,12 @@ const plainTextHeaders = {
 };
 
 export const handler: Handler = async (event: HandlerEvent) => {
-  const supabaseUrl = process.env.VITE_SUPABASE_URL?.trim();
-  const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY?.trim();
+  const supabaseUrl = (
+    process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL
+  )?.trim();
+  const supabaseAnonKey = (
+    process.env.SUPABASE_ANON_KEY ?? process.env.VITE_SUPABASE_ANON_KEY
+  )?.trim();
 
   if (!supabaseUrl || !supabaseAnonKey) {
     return {
