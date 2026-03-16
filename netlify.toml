@@ -1,0 +1,8 @@
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+    from = "/rss/:id"
+    to = "/.netlify/functions/rss"
+    status = 200
+    force = true
