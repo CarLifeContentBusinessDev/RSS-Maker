@@ -1,96 +1,77 @@
+import { ScheduleItem } from "./../../src/types/scheduleItem";
 import { Handler, HandlerEvent } from "@netlify/functions";
+import { createClient } from "@supabase/supabase-js";
 
-interface ScheduleItem {
-  startHour: number;
-  endHour: number;
-  title: string;
-  desc: string;
-}
-
-interface Channel {
-  streamUrl: string;
-  schedule: ScheduleItem[];
-}
-
-const CHANNEL_DATA: Record<string, Channel> = {
-  ytn: {
-    streamUrl:
-      "https://radiolive.ytn.co.kr/radio/_definst_/20211118_fmlive/playlist.m3u8",
-    schedule: [
-      {
-        startHour: 0,
-        endHour: 6,
-        title: "ytn 1",
-        desc: "ytn 1 description",
-      },
-      {
-        startHour: 6,
-        endHour: 12,
-        title: "ytn 2",
-        desc: "ytn 2 description",
-      },
-      {
-        startHour: 12,
-        endHour: 18,
-        title: "ytn 3",
-        desc: "ytn 3 description",
-      },
-      {
-        startHour: 18,
-        endHour: 24,
-        title: "ytn 4",
-        desc: "ytn 4 description",
-      },
-    ],
-  },
-  test: {
-    streamUrl: "https://example.com/test.m3u8",
-    schedule: [
-      {
-        startHour: 9,
-        endHour: 18,
-        title: "K-Pop 히트곡",
-        desc: "낮 시간 신나는 아이돌 음악",
-      },
-      {
-        startHour: 18,
-        endHour: 9,
-        title: "K-Ballad 밤",
-        desc: "밤에 듣기 좋은 발라드",
-      },
-    ],
-  },
+const plainTextHeaders = {
+  "Content-Type": "text/plain; charset=utf-8",
+  "Access-Control-Allow-Origin": "*",
 };
 
 export const handler: Handler = async (event: HandlerEvent) => {
-  const pathParts = event.path.split("/");
-  const id = pathParts[pathParts.length - 1];
+  const supabaseUrl = process.env.VITE_SUPABASE_URL?.trim();
+  const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY?.trim();
 
-  // 1. 해당 ID의 채널 데이터 가져오기
-  const selectedChannel = CHANNEL_DATA[id] || CHANNEL_DATA["ytn"];
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return {
+      statusCode: 500,
+      headers: plainTextHeaders,
+      body: "Supabase 환경변수가 없습니다. SUPABASE_URL, SUPABASE_ANON_KEY를 설정해 주세요.",
+    };
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+  const pathParts = event.path.split("/");
+  const lastPathPart = pathParts[pathParts.length - 1];
+  const idFromPath = lastPathPart && lastPathPart !== "rss" ? lastPathPart : "";
+  const idFromQuery = event.queryStringParameters?.id?.trim() ?? "";
+  const id = idFromPath || idFromQuery;
+
+  if (!id) {
+    return {
+      statusCode: 400,
+      headers: plainTextHeaders,
+      body: "채널 id가 필요합니다.",
+    };
+  }
+
+  const { data: channel, error } = await supabase
+    .from("channels")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error || !channel) {
+    return {
+      statusCode: 404,
+      headers: plainTextHeaders,
+      body: "해당 채널을 찾을 수 없습니다.",
+    };
+  }
 
   const now = new Date();
   const kstHour = (now.getUTCHours() + 9) % 24;
 
-  // 2. 선택된 채널의 스케줄 안에서 현재 시간 프로그램 찾기
-  const currentProgram =
-    selectedChannel.schedule.find((p: ScheduleItem) => {
-      if (p.startHour < p.endHour) {
-        return kstHour >= p.startHour && kstHour < p.endHour;
-      } else {
-        // 날짜를 넘어가는 경우 처리
-        return kstHour >= p.startHour || kstHour < p.endHour;
-      }
-    }) || selectedChannel.schedule[0];
+  const currentProgram = Array.isArray(channel.schedule)
+    ? channel.schedule.find((p: ScheduleItem) => {
+        if (p.startHour < p.endHour) {
+          return kstHour >= p.startHour && kstHour < p.endHour;
+        } else {
+          return kstHour >= p.startHour || kstHour < p.endHour;
+        }
+      }) || channel.schedule[0]
+    : { title: channel.title, desc: channel.description };
 
   const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>PICKLE LIVE - ${selectedChannel.streamUrl.includes("ytn") ? "YTN" : "K-Pop"}</title>
+    <title>PICKLE LIVE - ${channel.title}</title>
+    <link>https://your-site.com/rss/${id}</link>
+    <description>${channel.description || "실시간 스트리밍 피드"}</description>
     <item>
       <title>[LIVE] ${currentProgram.title}</title>
-      <description>${currentProgram.desc}</description>
-      <enclosure url="${selectedChannel.streamUrl}" length="0" type="application/x-mpegURL" />
+      <description>${currentProgram.desc || currentProgram.description}</description>
+      <enclosure url="${channel.stream_url}" length="0" type="application/x-mpegURL" />
       <pubDate>${now.toUTCString()}</pubDate>
     </item>
   </channel>
