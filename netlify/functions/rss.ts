@@ -1,3 +1,4 @@
+import { generateRssXml } from "./../../src/utils/rssGenerator";
 import { ScheduleItem } from "./../../src/types/scheduleItem";
 import { Handler, HandlerEvent } from "@netlify/functions";
 import { createClient } from "@supabase/supabase-js";
@@ -82,33 +83,7 @@ export const handler: Handler = async (event: HandlerEvent) => {
       }) || channel.schedule[0]
     : { title: channel.title, desc: channel.description };
 
-  const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" 
-     xmlns:content="http://purl.org/rss/1.0/modules/content/" 
-     version="2.0">
-  <channel>
-    <title><![CDATA[PICKLE LIVE - ${channel.title}]]></title>
-    <description><![CDATA[${channel.description || "실시간 스트리밍 피드"}]]></description>
-    <link>https://your-site.com</link> <language>ko-KR</language> <itunes:author>${channel.author}</itunes:author>
-    <itunes:explicit>no</itunes:explicit> <itunes:type>episodic</itunes:type>
-    
-    <itunes:category text="${channel.category}" /> 
-    
-    <itunes:image href="${channel.image_url}" /> 
-
-    <item>
-      <title><![CDATA[[LIVE] ${currentProgram?.title || channel.title}]]></title>
-      <description><![CDATA[${currentProgram?.desc || channel.description}]]></description>
-      <link>https://your-site.com/rss/${id}</link> <pubDate>${now.toUTCString()}</pubDate>
-      <guid isPermaLink="false">${id}-${now.getTime()}</guid>
-      
-      <enclosure url="${channel.stream_url}" length="1024" type="audio/mpeg" />
-      
-      <itunes:duration>00:00:00</itunes:duration>
-      <itunes:explicit>no</itunes:explicit>
-    </item>
-  </channel>
-</rss>`;
+  const rssXml = generateRssXml(channel, id, currentProgram, now);
 
   return {
     statusCode: 200,
