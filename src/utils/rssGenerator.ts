@@ -14,7 +14,7 @@ export const generateRssXml = (
   <channel>
     <title><![CDATA[PICKLE LIVE - ${channel.title}]]></title>
     <description><![CDATA[${channel.description || "실시간 스트리밍"}]]></description>
-    <link>https://your-site.com</link> 
+    <link>https://rss-maker.vercel.app/</link> 
     <language>ko-KR</language> 
     <itunes:author><![CDATA[${channel.author || "PICKLE"}]]></itunes:author>
     <itunes:explicit>no</itunes:explicit> 
@@ -24,7 +24,7 @@ export const generateRssXml = (
     <item>
       <title><![CDATA[[LIVE] ${currentProgram?.title || channel.title}]]></title>
       <description><![CDATA[${currentProgram?.desc || channel.description}]]></description>
-      <link>https://your-site.com/rss/${id}</link> 
+      <link>https://rss-maker.vercel.app/rss/${id}</link> 
       <pubDate>${now.toUTCString()}</pubDate>
       <guid isPermaLink="false">${id}-${now.getTime()}</guid>
       <enclosure url="${channel.stream_url}" length="1" type="application/x-mpegURL" />
