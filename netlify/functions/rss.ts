@@ -1,5 +1,5 @@
 import { generateRssXml } from "./../../src/utils/rssGenerator";
-import { ScheduleItem } from "./../../src/types/scheduleItem";
+import type { ScheduleItem } from "./../../src/types/scheduleItem.ts";
 import { Handler, HandlerEvent } from "@netlify/functions";
 import { createClient } from "@supabase/supabase-js";
 

@@ -1,5 +1,5 @@
-import type { Channel } from "../types/channel";
-import type { ScheduleItem } from "../types/scheduleItem";
+import type { Channel } from "../types/channel.ts";
+import type { ScheduleItem } from "../types/scheduleItem.ts";
 
 export const generateRssXml = (
   channel: Channel,
