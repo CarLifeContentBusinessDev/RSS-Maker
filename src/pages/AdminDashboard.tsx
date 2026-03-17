@@ -148,7 +148,7 @@ export default function AdminDashboard() {
 
     try {
       const { data, error } = await supabase
-        .from("channels")
+        .from("streaming")
         .select("*")
         .order("id");
 
@@ -201,7 +201,7 @@ export default function AdminDashboard() {
     setIsSaving(targetId);
     try {
       const { error } = await supabase
-        .from("channels")
+        .from("streaming")
         .update({
           id: channel.id,
           title: channel.title,
@@ -244,7 +244,7 @@ export default function AdminDashboard() {
 
     setIsSaving("__new__");
     try {
-      const { error } = await supabase.from("channels").insert({
+      const { error } = await supabase.from("streaming").insert({
         id: newChannel.id.trim(),
         title: newChannel.title,
         stream_url: newChannel.stream_url,

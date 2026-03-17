@@ -41,7 +41,7 @@ export const handler: Handler = async (event: HandlerEvent) => {
   }
 
   const { data: channel, error } = await supabase
-    .from("channels")
+    .from("streaming")
     .select("*")
     .eq("id", id)
     .single();

@@ -123,7 +123,7 @@ export default async function handler(
 
   const supabase = createClient(supabaseUrl, supabaseAnonKey);
   const { data: channel, error } = await supabase
-    .from("channels")
+    .from("streaming")
     .select("*")
     .eq("id", id)
     .single<Channel>();
