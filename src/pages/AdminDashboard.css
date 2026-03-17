@@ -379,6 +379,182 @@
   font-size: 0.86rem;
 }
 
+.url-input {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: "JetBrains Mono", Consolas, monospace !important;
+  font-size: 0.86rem !important;
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.form-required {
+  color: var(--admin-danger);
+  margin-left: 0.15em;
+}
+
+.side-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.side-title-row .side-title {
+  margin-bottom: 0;
+}
+
+.schedule-add-btn {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.78rem;
+  flex-shrink: 0;
+}
+
+.schedule-edit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.schedule-edit-item {
+  border: 1px solid rgba(17, 32, 58, 0.12);
+  border-radius: 12px;
+  padding: 0.68rem 0.72rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.48rem;
+}
+
+.schedule-edit-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.schedule-edit-index {
+  margin: 0;
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #2c3f64;
+  letter-spacing: 0.01em;
+}
+
+.schedule-edit-time {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.42rem;
+}
+
+.schedule-edit-time > label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  font-size: 0.7rem;
+  color: var(--admin-muted);
+  font-weight: 700;
+}
+
+.schedule-hm {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.schedule-hm::before {
+  content: ":";
+  order: 1;
+  color: #7b88a3;
+  margin: 0 -0.05rem;
+}
+
+.schedule-hm input:first-child {
+  order: 0;
+}
+
+.schedule-hm input:last-child {
+  order: 2;
+}
+
+.schedule-edit-time > span {
+  color: var(--admin-muted);
+  font-size: 0.82rem;
+  padding-bottom: 0.32rem;
+}
+
+.schedule-hour-input {
+  width: 56px;
+  border: 1px solid rgba(17, 32, 58, 0.16);
+  border-radius: 10px;
+  padding: 0.4rem 0.45rem;
+  font-size: 0.82rem;
+  text-align: center;
+  outline: none;
+  font-family: inherit;
+}
+
+.schedule-hour-input:focus {
+  border-color: rgba(15, 93, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(15, 93, 255, 0.14);
+}
+
+.schedule-text-input {
+  width: 100%;
+  border: 1px solid rgba(17, 32, 58, 0.14);
+  border-radius: 10px;
+  padding: 0.46rem 0.56rem;
+  font-size: 0.83rem;
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.schedule-text-input:focus {
+  border-color: rgba(15, 93, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(15, 93, 255, 0.14);
+}
+
+.schedule-delete-btn {
+  border: none;
+  background: rgba(228, 87, 87, 0.08);
+  color: #a53636;
+  cursor: pointer;
+  padding: 0.22rem 0.48rem;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+.schedule-delete-btn:hover {
+  color: #ffffff;
+  background: var(--admin-danger);
+}
+
+.schedule-delete-btn:active {
+  transform: scale(0.96);
+}
+
+.schedule-edit-item[draggable="true"] {
+  cursor: move;
+}
+
+.schedule-edit-item[draggable="true"]:active {
+  opacity: 0.75;
+}
+
 .channel-meta {
   display: flex;
   justify-content: space-between;
@@ -709,5 +885,24 @@
   .detail-actions .ghost-btn {
     width: 100%;
     justify-content: center;
+  }
+
+  .toolbar-right {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .schedule-edit-time {
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .schedule-edit-time > span {
+    padding-bottom: 0;
+  }
+
+  .schedule-delete-btn {
+    margin-left: auto;
   }
 }
