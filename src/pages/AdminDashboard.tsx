@@ -1170,12 +1170,25 @@ export default function AdminDashboard() {
                               )}
                             </div>
 
-                            <div className="rss-url-row">
-                              <p className="rss-url-text">{`${window.location.origin}/rss/${ch.id}`}</p>
+                            <div className="list-program rss-url-box">
+                              <p className="list-program-label">RSS 주소</p>
+                              <a
+                                href={`/rss/${ch.id}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="channel-link rss-url-link"
+                              >
+                                {`${window.location.origin}/rss/${ch.id}`}
+                                <ExternalLink size={13} />
+                              </a>
+                            </div>
+                          </div>
+
+                          <div className="channel-meta">
+                            <div className="list-actions">
                               <button
                                 type="button"
-                                className="rss-copy-btn"
-                                title="URL 복사"
+                                className="ghost-btn"
                                 onClick={() => {
                                   navigator.clipboard.writeText(
                                     `${window.location.origin}/rss/${ch.id}`,
@@ -1189,20 +1202,8 @@ export default function AdminDashboard() {
                                 ) : (
                                   <Copy size={14} />
                                 )}
+                                {copiedId === ch.id ? "복사됨" : "RSS 복사"}
                               </button>
-                            </div>
-                          </div>
-
-                          <div className="channel-meta">
-                            <div className="list-actions">
-                              <a
-                                href={`/rss/${ch.id}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="channel-link list-xml-link"
-                              >
-                                RSS 보러가기 <ExternalLink size={14} />
-                              </a>
                               <button
                                 type="button"
                                 className="channel-save"
