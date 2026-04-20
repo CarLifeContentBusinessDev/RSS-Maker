@@ -897,6 +897,38 @@ export default function AdminDashboard() {
                       disabled={!isEditMode}
                     />
                   </div>
+
+                  <div className="list-program rss-url-box">
+                    <p className="list-program-label">RSS 주소</p>
+                    <div className="rss-url-actions">
+                      <a
+                        href={`/rss/${selectedChannelId}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="channel-link rss-url-link"
+                      >
+                        {`${window.location.origin}/rss/${selectedChannelId}`}
+                      </a>
+                      <button
+                        type="button"
+                        className="rss-detail-copy-btn"
+                        onClick={() => {
+                          navigator.clipboard.writeText(
+                            `${window.location.origin}/rss/${selectedChannelId}`,
+                          );
+                          setCopiedId(selectedChannelId!);
+                          setTimeout(() => setCopiedId(null), 2000);
+                        }}
+                      >
+                        {copiedId === selectedChannelId ? (
+                          <Check size={13} />
+                        ) : (
+                          <Copy size={13} />
+                        )}
+                        {copiedId === selectedChannelId ? "복사됨" : "URL 복사"}
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 <aside className="detail-side">
