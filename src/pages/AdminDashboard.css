@@ -618,6 +618,49 @@
   background: #fee2e2;
 }
 
+.rss-url-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid rgba(17, 32, 58, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.rss-url-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 0.78rem;
+  color: var(--admin-muted);
+  margin-right: auto;
+}
+
+.rss-copy-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(15, 93, 255, 0.25);
+  border-radius: 8px;
+  background: rgba(15, 93, 255, 0.07);
+  color: var(--admin-primary-strong);
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.rss-copy-btn:hover {
+  background: var(--admin-primary);
+  color: #ffffff;
+  border-color: var(--admin-primary);
+}
+
 .list-xml-link {
   padding: 0.45rem 0.35rem;
   border-radius: 10px;

@@ -10,6 +10,8 @@ import {
   RefreshCw,
   Plus,
   Trash2,
+  Copy,
+  Check,
 } from "lucide-react";
 import "./AdminDashboard.css";
 
@@ -63,6 +65,8 @@ export default function AdminDashboard() {
     description: "",
     schedule: [],
   });
+
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const [draggingScheduleIndex, setDraggingScheduleIndex] = useState<
     number | null
@@ -1164,6 +1168,28 @@ export default function AdminDashboard() {
                                   등록된 편성표가 없습니다.
                                 </p>
                               )}
+                            </div>
+
+                            <div className="rss-url-row">
+                              <p className="rss-url-text">{`${window.location.origin}/rss/${ch.id}`}</p>
+                              <button
+                                type="button"
+                                className="rss-copy-btn"
+                                title="URL 복사"
+                                onClick={() => {
+                                  navigator.clipboard.writeText(
+                                    `${window.location.origin}/rss/${ch.id}`,
+                                  );
+                                  setCopiedId(ch.id);
+                                  setTimeout(() => setCopiedId(null), 2000);
+                                }}
+                              >
+                                {copiedId === ch.id ? (
+                                  <Check size={14} />
+                                ) : (
+                                  <Copy size={14} />
+                                )}
+                              </button>
                             </div>
                           </div>
 
