@@ -218,6 +218,16 @@
 
 .list-card {
   min-height: 260px;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-card .channel-body {
+  flex: 1;
+}
+
+.list-card .list-program {
+  min-height: 90px;
 }
 
 .channel-head {
@@ -587,6 +597,25 @@
 
 .list-actions .channel-save {
   height: 38px;
+}
+
+.channel-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  width: 38px;
+  flex-shrink: 0;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  background: transparent;
+  color: #ef4444;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.channel-delete-btn:hover {
+  background: #fee2e2;
 }
 
 .list-xml-link {

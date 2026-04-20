@@ -274,6 +274,20 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleDeleteChannel = async (id: string) => {
+    if (!supabase) return;
+    if (!window.confirm(`채널 "${id}"을(를) 삭제하시겠습니까?`)) return;
+    try {
+      const { error } = await supabase.from("streaming").delete().eq("id", id);
+      if (error) throw error;
+      setChannels((prev) => prev.filter((ch) => ch.id !== id));
+      setInitialChannels((prev) => prev.filter((ch) => ch.id !== id));
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "알 수 없는 오류";
+      setErrorMessage("삭제 중 오류가 발생했습니다: " + message);
+    }
+  };
+
   const filteredChannels = channels.filter((ch) => {
     const keyword = query.trim().toLowerCase();
     if (!keyword) return true;
@@ -477,7 +491,7 @@ export default function AdminDashboard() {
               <Radio size={34} /> Streaming RSS Maker
             </h1>
             <p className="admin-subtitle">
-              채널 메타데이터를 수정하고 XML 피드 결과를 즉시 확인할 수
+              채널 메타데이터를 수정하고 RSS 피드 결과를 즉시 확인할 수
               있습니다.
             </p>
           </div>
@@ -574,7 +588,7 @@ export default function AdminDashboard() {
                     />
                   </div>
                   <div className="form-group">
-                    <label>스트리밍 소스 URL</label>
+                    <label>스트리밍 소스 URL (enclosure URL)</label>
                     <input
                       type="text"
                       value={newChannel.stream_url}
@@ -759,7 +773,7 @@ export default function AdminDashboard() {
                   rel="noreferrer"
                   className="ghost-btn"
                 >
-                  XML Preview <ExternalLink size={14} />
+                  RSS Preview <ExternalLink size={14} />
                 </a>
 
                 {!isEditMode ? (
@@ -847,7 +861,7 @@ export default function AdminDashboard() {
                   </div>
 
                   <div className="form-group">
-                    <label>스트리밍 소스 URL</label>
+                    <label>스트리밍 소스 URL (enclosure URL)</label>
                     <input
                       type="text"
                       value={selectedChannel.stream_url || ""}
@@ -1161,7 +1175,7 @@ export default function AdminDashboard() {
                                 rel="noreferrer"
                                 className="channel-link list-xml-link"
                               >
-                                XML 미리보기 <ExternalLink size={14} />
+                                RSS 보러가기 <ExternalLink size={14} />
                               </a>
                               <button
                                 type="button"
@@ -1169,6 +1183,13 @@ export default function AdminDashboard() {
                                 onClick={() => openDetail(ch.id)}
                               >
                                 <Eye size={16} /> 상세 보기
+                              </button>
+                              <button
+                                type="button"
+                                className="channel-delete-btn"
+                                onClick={() => handleDeleteChannel(ch.id)}
+                              >
+                                <Trash2 size={16} />
                               </button>
                             </div>
                           </div>
