@@ -1211,7 +1211,6 @@ export default function AdminDashboard() {
                                 className="channel-link rss-url-link"
                               >
                                 {`${window.location.origin}/rss/${ch.id}`}
-                                <ExternalLink size={13} />
                               </a>
                             </div>
                           </div>
